@@ -27,15 +27,12 @@ jobs:
             sudo dnf update -y
             sudo dnf install -y docker
             sudo systemctl enable --now docker
-            sudo usermod -aG docker ec2-user
+
           fi
-
-
-          newgrp docker << EONG
             cd ${{ secrets.APP_DIR }}
-            docker stop real-time-chat-app || true
-            docker rm real-time-chat-app || true
-            docker build -t real-time-chat-app .
-            docker run -d -p 3000:3000 --name real-time-chat-app real-time-chat-app
+            sudo docker stop real-time-chat-app || true
+            sudo docker rm real-time-chat-app || true
+            sudo docker build -t real-time-chat-app .
+            sudo docker run -d -p 3000:3000 --name real-time-chat-app real-time-chat-app
           EONG
           EOF
