@@ -25,6 +25,8 @@ jobs:
           ssh -i key.pem -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
             cd ${{ secrets.APP_DIR }}
             npm install
-            pm2 restart all || pm2 start src/server.js --name login-app
-            npm test
+            docker stop real-time-chat-app || true
+            docker rm real-time-chat-app || true
+            docker build -t real-time-chat-app .
+            docker run -d -p 3000:3000 --name real-time-chat-app real-time-chat-app
           EOF
