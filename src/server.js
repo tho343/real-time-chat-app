@@ -85,10 +85,13 @@ io.on("connection", (socket) => {
   socket.on("userLogin", (username) => {
     socket.username = username;
     console.log(`${username} has logged in`);
-    socket.broadcast.emit("message", `${socket.username} has joined !`);
+    socket.broadcast.emit("message", {
+      messageType: "notification",
+      messageContent: `${username} has joined`,
+    });
   });
   socket.on("chatMessage", (msg) => {
-    io.emit("message", `${socket.username}: ` + msg);
+    io.emit("message", { messageType: "chat", messageContent: msg });
   });
   socket.on("isTyping", () => {
     socket.broadcast.emit("showTyping", `${socket.username} is typing...`);

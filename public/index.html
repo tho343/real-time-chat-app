@@ -5,15 +5,39 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="./css/styles.css" />
     <title>Real-Time Chat App</title>
   </head>
   <body>
-    <h1>Chat App</h1>
-    <form id="login-form">
-      <input placeholder="email" id="email" />
-      <input type="password" placeholder="password" id="password" />
-      <button type="submit">Log in</button>
-    </form>
+    <div class="login-container p-[24px] rounded-[12px]">
+      <form id="login-form" class="flex flex-col gap-4">
+        <div>
+          <input placeholder="email" id="email" class="w-full" />
+          <div class="text-black/40 ml-1 text-sm">
+            demo users: admin@example.com, test@example.com
+          </div>
+        </div>
+        <div>
+          <input
+            type="password"
+            placeholder="password"
+            id="password"
+            class="w-full"
+          />
+          <div class="text-black/40 ml-1 text-sm">
+            demo password: password123
+          </div>
+        </div>
+
+        <button
+          type="submit"
+          class="bg-[#615ef0] text-white px-[8px] py-[5px] rounded-[10px]"
+        >
+          Log in
+        </button>
+      </form>
+    </div>
+
     <script src="./js/index.js"></script>
   </body>
 </html>

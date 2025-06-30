@@ -40,10 +40,19 @@ document.getElementById("chat-message").addEventListener("input", () => {
   }, 3000);
 });
 //listen to message
-socket.on("message", (msg) => {
-  const div = document.createElement("div");
-  div.textContent = msg;
-  messageList.appendChild(div);
+socket.on("message", ({ messageType, messageContent }) => {
+  if (messageType === "chat") {
+    const div = document.createElement("div");
+    div.className = "chat-bubble";
+    div.textContent = messageContent;
+    messageList.appendChild(div);
+  }
+  if (messageType === "notification") {
+    const div = document.createElement("div");
+    div.className = "chat-noti text-black/40";
+    div.textContent = messageContent;
+    messageList.appendChild(div);
+  }
 });
 //handle typing
 socket.on("showTyping", (msg) => {
