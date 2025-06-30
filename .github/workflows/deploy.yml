@@ -22,14 +22,20 @@ jobs:
         run: |
           rsync -avz -e "ssh -i key.pem -o StrictHostKeyChecking=no" ./ ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:${{ secrets.APP_DIR }}
           ssh -i key.pem -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
-          sudo yum update -y
-          sudo amazon-linux-extras install docker -y
-          sudo systemctl enable docker
-          sudo systemctl start docker
-          sudo usermod -aG docker ec2-user
-          cd ${{ secrets.APP_DIR }}
+
+          if ! command -v docker &> /dev/null; then
+            sudo dnf update -y
+            sudo dnf install -y docker
+            sudo systemctl enable --now docker
+            sudo usermod -aG docker ec2-user
+          fi
+
+
+          newgrp docker << EONG
+            cd ${{ secrets.APP_DIR }}
             docker stop real-time-chat-app || true
             docker rm real-time-chat-app || true
             docker build -t real-time-chat-app .
             docker run -d -p 3000:3000 --name real-time-chat-app real-time-chat-app
+          EONG
           EOF
